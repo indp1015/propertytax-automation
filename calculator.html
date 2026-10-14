@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231a3d5c'/%3E%3Ctext x='50' y='70' font-size='60' text-anchor='middle' fill='white' font-family='Arial,sans-serif' font-weight='bold'%3EH%3C/text%3E%3C/svg%3E">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="google-site-verification" content="mach6lnfa3pBwVHZieOD4_1wwS_s0kobDz9h4xyb7AE" />
+<title>Property Tax Calculator 2026 — Estimate Your Annual Tax Bill | US Housing Data</title>
+<meta name="description" content="Free property tax calculator for 2026. Enter your home value and select your county to estimate your annual property tax bill. Compare rates across states.">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link rel="stylesheet" href="/static/style.css">
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2850461542641038"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="/" class="logo">US Property Tax Data</a>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/calculator.html">Calculator</a>
+      <a href="/blog/">Blog</a>
+      <a href="/about.html">About</a>
+    </nav>
+  </div>
+</header>
+
+<!-- 상단 광고 슬롯 -->
+<div class="container ad-slot ad-top">
+  <!-- AdSense 광고 코드 삽입 위치 (승인 후) -->
+</div>
+
+<main class="container">
+
+
+<article class="calculator-page">
+<h1>Property Tax Calculator 2026</h1>
+<p class="lead">
+  Estimate your annual property tax bill with <strong>automatic county
+  lookup</strong>. Compare effective tax rates across all 3,134 U.S. counties.
+</p>
+
+<div class="ad-slot ad-in-article"></div>
+
+<div class="calc-grid">
+
+  <!-- 좌측: 입력 -->
+  <div class="calc-inputs">
+
+    <div class="calc-section">
+      <h3>🏠 Property Details</h3>
+
+      <div class="calc-field">
+        <label for="homeValue">Home Value</label>
+        <div class="input-group">
+          <span class="prefix">$</span>
+          <input type="number" id="homeValue" value="400000" min="10000" step="5000">
+        </div>
+        <small class="hint">Enter the current market value or purchase price</small>
+      </div>
+
+      <div class="calc-field">
+        <label for="stateSelect">State</label>
+        <select id="stateSelect">
+          <option value="">-- All States --</option>
+        </select>
+      </div>
+
+      <div class="calc-field">
+        <label for="countySelect">County</label>
+        <select id="countySelect">
+          <option value="">-- Select State First --</option>
+        </select>
+        <small class="hint" id="rateInfo"></small>
+      </div>
+
+      <div class="calc-field">
+        <label for="assessmentRatio">Assessment Ratio (%)</label>
+        <div class="input-group">
+          <input type="number" id="assessmentRatio" value="100" min="1" max="100" step="1">
+          <span class="suffix">%</span>
+        </div>
+        <small class="hint">Some states assess at less than 100% of market value</small>
+      </div>
+
+      <div class="calc-field">
+        <label for="exemption">Exemption Amount</label>
+        <div class="input-group">
+          <span class="prefix">$</span>
+          <input type="number" id="exemption" value="0" min="0" step="1000">
+        </div>
+        <small class="hint">Homestead / senior / veteran exemption (if applicable)</small>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- 우측: 결과 -->
+  <div class="calc-results">
+
+    <div class="result-main">
+      <div class="result-label">Estimated Annual Property Tax</div>
+      <div class="result-value" id="annualTax">$0</div>
+      <div class="result-sub" id="effectiveInfo">Effective Rate: 0.00%</div>
+    </div>
+
+    <div class="result-breakdown">
+      <h3>Monthly &amp; Annual Breakdown</h3>
+      <table class="breakdown-table">
+        <tbody>
+          <tr>
+            <td>Annual Tax</td>
+            <td class="amount" id="annualAmount">$0</td>
+          </tr>
+          <tr>
+            <td>Monthly (÷ 12)</td>
+            <td class="amount" id="monthlyAmount">$0</td>
+          </tr>
+          <tr>
+            <td>Taxable Value</td>
+            <td class="amount" id="taxableValue">$0</td>
+          </tr>
+          <tr>
+            <td>Effective Rate</td>
+            <td class="amount" id="effectiveRate">0.00%</td>
+          </tr>
+          <tr class="total-row">
+            <td><strong>5-Year Total</strong></td>
+            <td class="amount"><strong id="fiveYearTotal">$0</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="result-comparison" id="comparisonBox">
+      <p class="limit-hint">💡 Select a county to compare your rate with the local average.</p>
+    </div>
+
+    <div class="result-summary">
+      <h3>Ranking Snapshot</h3>
+      <table class="breakdown-table">
+        <tbody>
+          <tr>
+            <td>County Rank (nationally)</td>
+            <td class="amount" id="countyRank">—</td>
+          </tr>
+          <tr>
+            <td>State Average</td>
+            <td class="amount" id="stateAvg">—</td>
+          </tr>
+          <tr>
+            <td>National Average</td>
+            <td class="amount" id="nationalAvg">—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="ad-slot ad-in-article"></div>
+
+<h2>How to Use This Calculator</h2>
+<ol>
+  <li><strong>Enter your home value</strong> — current market value or recent purchase price</li>
+  <li><strong>Select your state and county</strong> — the calculator applies the local effective tax rate</li>
+  <li><strong>Adjust the assessment ratio</strong> — if your state assesses below 100% of market value</li>
+  <li><strong>Subtract your exemption</strong> — homestead, senior, or veteran exemptions</li>
+</ol>
+
+<h2>2026 State Property Tax Rate Rankings</h2>
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Rank</th>
+      <th>State</th>
+      <th>Effective Rate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td>Hawaii</td><td>0.32%</td></tr>
+    <tr><td>2</td><td>Alabama</td><td>0.40%</td></tr>
+    <tr><td>3</td><td>Colorado</td><td>0.51%</td></tr>
+    <tr><td>...</td><td>...</td><td>...</td></tr>
+    <tr><td>50</td><td>Illinois</td><td>2.07%</td></tr>
+    <tr><td>51</td><td>New Jersey</td><td>2.23%</td></tr>
+  </tbody>
+</table>
+
+<p class="methodology">
+  <strong>Data Source:</strong> U.S. Census Bureau, ACS 5-Year Estimates
+  (B25103 median property tax, B25077 median home value). Effective tax rate
+  = median tax ÷ median home value.
+  This calculator is for educational purposes only and does not constitute
+  tax or legal advice. Consult your local tax assessor for exact figures.
+</p>
+
+</article>
+
+<!-- 계산기 JavaScript 로드 -->
+<script src="/static/calculator.js"></script>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>&copy; 2026 US Property Tax Data. Data sourced from the U.S. Census Bureau (ACS).</p>
+    <nav>
+      <a href="/about.html">About</a> ·
+      <a href="/privacy.html">Privacy Policy</a> ·
+      <a href="/terms.html">Terms</a> ·
+      <a href="/contact.html">Contact</a>
+    </nav>
+  </div>
+  <p class="disclaimer">
+    Property tax data: U.S. Census Bureau, American Community Survey (ACS) 5-Year Estimates.<br>
+    This site is for informational purposes only and does not constitute tax or legal advice.
+  </p>
+</footer>
+</body>
+</html>
