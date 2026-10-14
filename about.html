@@ -5,8 +5,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="google-site-verification" content="mach6lnfa3pBwVHZieOD4_1wwS_s0kobDz9h4xyb7AE" />
-<title>About US Housing Data - U.S. Housing Market Data</title>
-<meta name="description" content="About US Housing Data: independent U.S. housing market data sourced from the Census Bureau (ACS), FHFA, BLS, IRS, and FRED. Learn about our methodology and mission.">
+<title>About US Property Tax Data - U.S. Property Tax Data</title>
+<meta name="description" content="About US Property Tax Data: independent U.S. property tax data sourced from the Census Bureau (ACS). Learn about our methodology, data sources, and mission.">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <link rel="stylesheet" href="/static/style.css">
 <!-- Google AdSense -->
@@ -35,37 +35,33 @@
 
 
 <article class="static-page">
-<h1>About US Housing Data</h1>
+<h1>About US Property Tax Data</h1>
 
 <p class="lead">
-  US Housing Data is an independent, data-driven resource that provides
-  free housing market information for every U.S. state and county. Our goal
-  is simple: make authoritative housing data accessible, understandable,
-  and useful for homebuyers, renters, researchers, and curious citizens.
+  US Property Tax Data is an independent, data-driven resource that provides
+  free property tax information for every U.S. state and county. Our goal
+  is simple: help homeowners, buyers, and researchers understand how much
+  property tax they will actually pay — before they commit to a purchase.
 </p>
 
 <h2>What We Cover</h2>
 <p>
-  We publish county-level and state-level housing metrics for all 50 U.S.
+  We publish county-level and state-level property tax metrics for all 50 U.S.
   states and the District of Columbia, covering more than 3,100 counties:
 </p>
 <ul>
-  <li><strong>Median Home Value</strong> — the midpoint of all owner-occupied housing values</li>
-  <li><strong>Median Gross Rent</strong> — the midpoint of monthly rental costs, including utilities</li>
-  <li><strong>Owner Occupancy Rate</strong> — the percentage of occupied units that are owner-occupied</li>
-  <li><strong>Price-to-Rent Ratio</strong> — a key indicator of whether buying or renting is more favorable</li>
-  <li><strong>Historical Price Trends</strong> — multi-year price and rent trajectories</li>
-  <li><strong>FHFA House Price Index</strong> — recent market momentum data</li>
-  <li><strong>Local Employment &amp; Wages</strong> — county-level jobs and average weekly wages</li>
-  <li><strong>Housing Supply</strong> — new residential building permits authorized</li>
-  <li><strong>Migration Patterns</strong> — county-to-county population and income flows</li>
-  <li><strong>Mortgage Rates</strong> — 30-year and 15-year fixed mortgage rate trends</li>
+  <li><strong>Effective Property Tax Rate</strong> — median tax ÷ median home value × 100</li>
+  <li><strong>Median Annual Property Tax</strong> — the midpoint of real estate taxes paid</li>
+  <li><strong>Median Home Value</strong> — for context on assessed value base</li>
+  <li><strong>State and County Rankings</strong> — highest and lowest tax rate jurisdictions</li>
+  <li><strong>Property Tax Calculator</strong> — estimate your annual and monthly bill</li>
+  <li><strong>Homestead Exemption Information</strong> — where available</li>
 </ul>
 
 <h2>Data Sources</h2>
 <p>
-  All data on US Housing Data comes from official, publicly available
-  government sources. We do not generate or estimate housing values ourselves.
+  All data on US Property Tax Data comes from official, publicly available
+  government sources. We do not generate or estimate tax rates ourselves.
   Each dataset is used under its original license terms.
 </p>
 
@@ -79,34 +75,19 @@
   </thead>
   <tbody>
     <tr>
-      <td>American Community Survey (ACS) 5-Year Estimates</td>
-      <td>U.S. Census Bureau</td>
+      <td>Median Real Estate Taxes Paid (B25103)</td>
+      <td>U.S. Census Bureau — American Community Survey (ACS)</td>
       <td>Public Domain</td>
     </tr>
     <tr>
-      <td>House Price Index (HPI)</td>
-      <td>Federal Housing Finance Agency (FHFA)</td>
+      <td>Median Home Value (B25077)</td>
+      <td>U.S. Census Bureau — American Community Survey (ACS)</td>
       <td>Public Domain</td>
     </tr>
     <tr>
-      <td>Quarterly Census of Employment and Wages (QCEW)</td>
-      <td>U.S. Bureau of Labor Statistics (BLS)</td>
+      <td>Median Household Income (B19013)</td>
+      <td>U.S. Census Bureau — American Community Survey (ACS)</td>
       <td>Public Domain</td>
-    </tr>
-    <tr>
-      <td>Building Permits Survey</td>
-      <td>U.S. Census Bureau</td>
-      <td>Public Domain (CC0 1.0)</td>
-    </tr>
-    <tr>
-      <td>County-to-County Migration Data</td>
-      <td>IRS Statistics of Income</td>
-      <td>Public Domain</td>
-    </tr>
-    <tr>
-      <td>Mortgage Rate Series (MORTGAGE30US, MORTGAGE15US)</td>
-      <td>FRED, Federal Reserve Bank of St. Louis</td>
-      <td>Public Domain (U.S. Government Work)</td>
     </tr>
   </tbody>
 </table>
@@ -115,81 +96,73 @@
 <ul>
   <li>
     <strong>U.S. Census Bureau — American Community Survey (ACS) 5-Year Estimates</strong><br>
-    Provides median home values, median gross rent, and tenure data.
-    Learn more at
+    The ACS is the largest household survey in the United States, conducted
+    continuously by the U.S. Census Bureau. We use the 5-Year Estimates for
+    county-level property tax and home value data. Learn more at
     <a href="https://www.census.gov/programs-surveys/acs" target="_blank" rel="noopener">census.gov</a>.
   </li>
   <li>
-    <strong>Federal Housing Finance Agency (FHFA) — House Price Index (HPI)</strong><br>
-    Provides a quarterly index of single-family home price changes based on
-    millions of mortgage transactions. Learn more at
-    <a href="https://www.fhfa.gov/DataTools/Downloads/Pages/House-Price-Index.aspx" target="_blank" rel="noopener">fhfa.gov</a>.
+    <strong>Median Real Estate Taxes Paid (ACS Variable B25103)</strong><br>
+    Reports the median annual real estate taxes paid by owner-occupied
+    housing units with a mortgage or similar debt, for a given county.
+    This is a self-reported figure from the ACS survey.
   </li>
   <li>
-    <strong>U.S. Bureau of Labor Statistics — Quarterly Census of Employment and Wages (QCEW)</strong><br>
-    Provides county-level employment, wage, and establishment data.
-    Learn more at
-    <a href="https://www.bls.gov/cew/" target="_blank" rel="noopener">bls.gov/cew</a>.
-  </li>
-  <li>
-    <strong>U.S. Census Bureau — Building Permits Survey</strong><br>
-    Provides monthly and annual counts of new residential construction authorized.
-    Learn more at
-    <a href="https://www.census.gov/construction/bps/" target="_blank" rel="noopener">census.gov/construction/bps</a>.
-  </li>
-  <li>
-    <strong>IRS Statistics of Income — County-to-County Migration Data</strong><br>
-    Provides annual migration flows derived from individual tax returns.
-    Learn more at
-    <a href="https://www.irs.gov/statistics/soi-tax-stats-migration-data" target="_blank" rel="noopener">irs.gov</a>.
-  </li>
-  <li>
-    <strong>FRED, Federal Reserve Bank of St. Louis</strong><br>
-    Provides economic time series including national mortgage rate benchmarks.
-    Learn more at
-    <a href="https://fred.stlouisfed.org/" target="_blank" rel="noopener">fred.stlouisfed.org</a>.
+    <strong>Median Home Value (ACS Variable B25077)</strong><br>
+    Reports the median value of owner-occupied housing units. Used here as
+    the denominator for computing the effective property tax rate.
   </li>
 </ul>
 
 <h2>Our Methodology</h2>
 <p>
-  We aggregate raw data from these sources and compute derived metrics
-  (such as price-to-rent ratio and year-over-year changes) using transparent,
-  reproducible formulas. We clearly label the vintage (year or quarter) of
-  all data and never claim to provide real-time prices.
+  <strong>Effective property tax rate</strong> is calculated as:
+</p>
+<p class="formula" style="background: #f0f5fa; padding: 12px 16px; border-left: 4px solid #1a3d5c; border-radius: 4px; font-family: monospace;">
+  Effective Rate = (Median Real Estate Taxes Paid ÷ Median Home Value) × 100
 </p>
 <p>
-  Where county-level data is unavailable (for example, FHFA HPI is limited
-  to areas with sufficient mortgage transaction volume), we indicate this
-  explicitly rather than substituting estimates.
+  This metric normalizes for the wide variation in housing prices across
+  jurisdictions and is the most accurate way to compare property tax burden
+  across counties. Unlike nominal millage rates, which depend on assessment
+  ratios that vary by state and can be misleading, the effective rate
+  reflects what homeowners actually pay.
+</p>
+<p>
+  Where county-level data is unavailable (typically for very small counties
+  with limited sample size), we indicate this explicitly rather than
+  substituting estimates.
 </p>
 
 <h2>Editorial Standards</h2>
 <p>
-  Some pages include an "Editor's Insight" section that summarizes key
-  patterns in the underlying metrics. These insights are derived directly from
-  rigorous analysis of actual data points to highlight meaningful market trends.
-  They are analytical commentary for informational purposes, not financial or
-  investment advice.
+  Some pages include an "Property Tax Insight" section that summarizes key
+  patterns in the underlying data. These insights are generated using AI
+  language models based on the actual data points, and are reviewed for
+  accuracy. They are analytical commentary for informational purposes, not
+  tax or legal advice.
 </p>
 
 <h2>What We Are Not</h2>
 <p>
-  US Housing Data is <strong>not</strong> a real estate brokerage, lender,
-  or financial advisor. We do not sell, buy, or list properties. Nothing on
-  this Site constitutes financial, legal, or investment advice. Always
-  consult a qualified professional before making major financial decisions.
+  US Property Tax Data is <strong>not</strong> a tax advisory service, real estate
+  brokerage, or legal advisor. We do not provide tax advice, file appeals,
+  or represent property owners in assessment disputes. Nothing on this Site
+  constitutes tax, legal, or financial advice. Always consult a qualified
+  professional — such as a CPA, tax attorney, or your local assessor's office
+  — before making decisions based on this data.
 </p>
+
 <h2>Related Sites</h2>
 <p>
-  US Mortgage Data is part of the <strong>DataIndp</strong> network of
+  US Property Tax Data is part of the <strong>DataIndp</strong> network of
   data-driven U.S. real estate resources:
 </p>
 <ul>
   <li>
-    <strong>US Mortgage Data</strong> (this site) — Financing decisions:
-    2026 FHA and conforming loan limits, monthly payment calculators, and
-    loan-type comparisons.
+    <strong>US Property Tax Data</strong> (this site) — Ongoing costs:
+    county-level effective property tax rates, median annual tax bills,
+    and ranking data.
   </li>
   <li>
     <strong>
@@ -197,19 +170,17 @@
     </strong> — Market exploration: median home values, rent trends, and
     8-year price data for all 3,134 U.S. counties.
   </li>
+  <li>
+    <strong>
+      <a href="https://mortgage.dataindp.com">US Mortgage Data</a>
+    </strong> — Financing decisions: 2026 FHA and conforming loan limits,
+    monthly payment calculators, and loan-type comparisons.
+  </li>
 </ul>
 <p>
-  Together, the two sites cover the full homebuyer journey: from
-  <em>"where should I live?"</em> to <em>"how do I finance the purchase?"</em>
-</p>
-<h2>Independence</h2>
-<p>
-  US Housing Data is an independently operated platform. We analyze publicly
-  available open data provided by government agencies, including the U.S.
-  Census Bureau, the Bureau of Labor Statistics, the IRS, the Federal Housing
-  Finance Agency, and the Federal Reserve Bank of St. Louis, to deliver
-  accessible housing market insights. US Housing Data operates as an autonomous
-  entity and is not affiliated with or sponsored by these agencies.
+  Together, the three sites cover the full homeownership journey: from
+  <em>"where should I live?"</em> to <em>"how do I finance it?"</em> to
+  <em>"what will it cost me ongoing?"</em>
 </p>
 
 <h2>Contact</h2>
@@ -219,27 +190,13 @@
   We welcome feedback on data accuracy and site usability.
 </p>
 
-<h3>Attribution Notice</h3>
-<p class="attribution-notice">
-  Employment and wage data: Source: U.S. Bureau of Labor Statistics,
-  Quarterly Census of Employment and Wages (QCEW). Public domain.<br>
-  Building permits data: Source: U.S. Census Bureau, Building Permits Survey.
-  Public domain (CC0 1.0).<br>
-  Migration data: Source: IRS Statistics of Income, County-to-County Migration
-  Data. Public domain (U.S. Government Work).<br>
-  Interest rate data: Source: FRED, Federal Reserve Bank of St. Louis.
-  Public domain (U.S. Government Work).<br>
-  Housing price index: This product uses FHFA Data but is neither endorsed
-  nor certified by FHFA.
-</p>
-
 </article>
 
 </main>
 
 <footer class="site-footer">
   <div class="container">
-    <p>&copy; 2026 US Property Tax Data. Data sourced from the U.S. Census Bureau (ACS).</p>
+    <p>&copy; 2026 US Property Tax Data. Data sourced from the U.S. Census Bureau (ACS 5-Year Estimates).</p>
     <nav>
       <a href="/about.html">About</a> ·
       <a href="/privacy.html">Privacy Policy</a> ·
