@@ -7,8 +7,8 @@
 
   let countyData = null;
   let stateMap = {};
-  let nationalAvgRate = 1.10;  // 폴백
-  let stateAvgRates = {};      // {state: avg_rate}
+  let nationalAvgRate = 1.10;
+  let stateAvgRates = {};
 
   // 카운티 데이터 로드
   fetch('/static/counties_tax_rates.json')
@@ -17,16 +17,13 @@
       countyData = data.counties;
       stateAvgRates = data.state_avg_rates || {};
       nationalAvgRate = data.national_avg_rate || 1.10;
-            // 🆕 insurance base URL 저장 (역방향 링크용)
+      // 🆕 insurance base URL 저장 (역방향 링크용)
       window.__insuranceBaseUrl = data.insurance_base_url || 'https://insurance.dataindp.com';
       buildStateMap();
       populateStateSelect();
       // 국민 평균 표시
       const el = document.getElementById('nationalAvg');
       if (el) el.textContent = nationalAvgRate.toFixed(2) + '%';
-
-      // 🆕 insurance base URL 저장 (역방향 링크용)
-      window.__insuranceBaseUrl = data.insurance_base_url || 'https://insurance.dataindp.com';
 
       applyUrlParams();
       calculate();
@@ -35,7 +32,6 @@
 
   function buildStateMap() {
     for (const [fips, info] of Object.entries(countyData)) {
-      // info: [name, state, median_tax, effective_rate]
       const state = info[1];
       if (!stateMap[state]) stateMap[state] = [];
       stateMap[state].push([fips, ...info]);
@@ -55,7 +51,6 @@
     });
   }
 
-  // 이벤트 바인딩
   ['homeValue', 'assessmentRatio', 'exemption', 'stateSelect', 'countySelect']
     .forEach(id => {
       const el = document.getElementById(id);
@@ -111,7 +106,6 @@
     const rawCounty  = (params.get('county') || '').trim();
     const countyParam = rawCounty ? rawCounty.padStart(5, '0') : '';
 
-    // 1) price → homeValue
     if (priceParam) {
       const price = parseFloat(priceParam);
       if (isFinite(price) && price > 0) {
@@ -119,17 +113,15 @@
       }
     }
 
-    // 2) 상태 결정 — FIPS 우선, 없으면 state 약자 → 전체 이름 매핑
     let effectiveState = null;
     if (countyParam && countyData && countyData[countyParam]) {
-      effectiveState = countyData[countyParam][1];         // "Virginia"
+      effectiveState = countyData[countyParam][1];
     } else if (stateParam) {
       effectiveState = STATE_ABBR_TO_NAME[stateParam] || stateParam;
     }
 
     if (!effectiveState) return;
 
-    // 3) stateSelect 적용 + county 목록 채우기
     const stateSel = document.getElementById('stateSelect');
     const hasState = Array.from(stateSel.options).some(o => o.value === effectiveState);
     if (!hasState) {
@@ -139,7 +131,6 @@
     stateSel.value = effectiveState;
     populateCountySelect(effectiveState);
 
-    // 4) county(FIPS) 적용
     if (countyParam) {
       const countySel = document.getElementById('countySelect');
       const hasCounty = Array.from(countySel.options).some(o => o.value === countyParam);
@@ -153,9 +144,6 @@
 
   function calculate() {
     const homeValue = parseFloat(document.getElementById('homeValue').value) || 0;
-
-  function calculate() {
-    const homeValue = parseFloat(document.getElementById('homeValue').value) || 0;
     const assessmentRatio = parseFloat(document.getElementById('assessmentRatio').value) || 100;
     const exemption = parseFloat(document.getElementById('exemption').value) || 0;
 
@@ -163,16 +151,13 @@
     const opt = countySel.options[countySel.selectedIndex];
     const rate = opt && opt.dataset.rate ? parseFloat(opt.dataset.rate) : 0;
 
-    // Taxable value after assessment ratio and exemption
     const assessedValue = homeValue * (assessmentRatio / 100);
     const taxableValue = Math.max(0, assessedValue - exemption);
 
-    // Annual tax
     const annualTax = taxableValue * (rate / 100);
     const monthlyTax = annualTax / 12;
     const fiveYearTotal = annualTax * 5;
 
-    // 출력
     document.getElementById('annualTax').textContent = fmt(annualTax);
     document.getElementById('annualAmount').textContent = fmt(annualTax);
     document.getElementById('monthlyAmount').textContent = fmt(monthlyTax);
@@ -181,7 +166,6 @@
     document.getElementById('fiveYearTotal').textContent = fmt(fiveYearTotal);
     document.getElementById('effectiveInfo').textContent = 'Effective Rate: ' + rate.toFixed(2) + '%';
 
-    // 주 평균 표시
     const stateSel = document.getElementById('stateSelect');
     const state = stateSel.value;
     if (state && stateAvgRates[state]) {
@@ -190,43 +174,11 @@
       document.getElementById('stateAvg').textContent = '—';
     }
 
-    // 비교 박스
     checkComparison(rate, state);
-    updateInsuranceLink();   // 🆕
+    updateInsuranceLink();
   }
+
   // 🆕 insurance 역방향 링크 생성/노출
-  function updateInsuranceLink() {
-    const box = document.getElementById('insuranceLinkBox');
-    const link = document.getElementById('insuranceLink');
-    if (!box || !link) return;
-
-    const countySel = document.getElementById('countySelect');
-    const fips = countySel && countySel.value;
-
-    // county 미선택 또는 메타데이터 없음 → 숨김
-    if (!fips || !countyData || !countyData[fips]) {
-      box.style.display = 'none';
-      link.removeAttribute('href');
-      return;
-    }
-
-    const info = countyData[fips];
-    const slug = info.length >= 5 ? info[4] : null;
-
-    // slug 없으면 숨김 (매칭 실패 케이스)
-    if (!slug) {
-      box.style.display = 'none';
-      link.removeAttribute('href');
-      return;
-    }
-
-    // insurance_base_url 은 fetch 한 data 에서 가져옴 (아래 4-C 참고)
-    const baseUrl = window.__insuranceBaseUrl || 'https://insurance.dataindp.com';
-    link.href = `${baseUrl}/counties/${encodeURIComponent(slug)}.html`;
-    box.style.display = 'block';
-  }
-
-    // 🆕 insurance 역방향 링크 생성/노출
   function updateInsuranceLink() {
     const box  = document.getElementById('insuranceLinkBox');
     const link = document.getElementById('insuranceLink');
@@ -235,7 +187,6 @@
     const countySel = document.getElementById('countySelect');
     const fips = countySel && countySel.value;
 
-    // county 미선택 / 데이터 없음 / slug 없음 → 링크 숨김
     if (!fips || !countyData || !countyData[fips]) {
       box.style.display = 'none';
       link.removeAttribute('href');
@@ -281,7 +232,6 @@
     return '$' + Math.round(n).toLocaleString('en-US');
   }
 
-  // 페이지 로드 시 자동 계산
   window.addEventListener('DOMContentLoaded', () => {
     setTimeout(calculate, 500);
   });
