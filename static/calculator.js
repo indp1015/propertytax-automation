@@ -17,11 +17,19 @@
       countyData = data.counties;
       stateAvgRates = data.state_avg_rates || {};
       nationalAvgRate = data.national_avg_rate || 1.10;
+            // 🆕 insurance base URL 저장 (역방향 링크용)
+      window.__insuranceBaseUrl = data.insurance_base_url || 'https://insurance.dataindp.com';
       buildStateMap();
       populateStateSelect();
       // 국민 평균 표시
       const el = document.getElementById('nationalAvg');
       if (el) el.textContent = nationalAvgRate.toFixed(2) + '%';
+      // 🆕 insurance 역방향 링크 초기 상태 (county 미선택 시 숨김)
+      updateInsuranceLink();
+
+      // 🆕 URL 파라미터 적용 후 최초 계산 (fetch 완료 후 반드시 재계산)
+      applyUrlParams();
+      calculate();
     })
     .catch(err => console.error('데이터 로드 실패:', err));
 
@@ -79,6 +87,57 @@
     }
   }
 
+  // 🆕 URL 파라미터 초기값 적용 (?state=AL&county=01089&price=299200)
+  function applyUrlParams() {
+    const params = new URLSearchParams(window.location.search);
+
+    const priceParam  = params.get('price');
+    const stateParam  = (params.get('state')  || '').trim().toUpperCase();
+    // FIPS는 leading zero가 있을 수 있으므로 5자리로 정규화
+    const rawCounty   = (params.get('county') || '').trim();
+    const countyParam = rawCounty ? rawCounty.padStart(5, '0') : '';
+
+    // 1) price → homeValue
+    if (priceParam) {
+      const price = parseFloat(priceParam);
+      if (isFinite(price) && price > 0) {
+        document.getElementById('homeValue').value = Math.round(price);
+      }
+    }
+
+    // 2) county만 있고 state가 없으면 FIPS로 주 약자 역조회
+    let effectiveState = stateParam;
+    if (!effectiveState && countyParam && countyData && countyData[countyParam]) {
+      effectiveState = countyData[countyParam][1];  // info = [name, state, median_tax, rate]
+    }
+
+    // 3) state → stateSelect 지정 + county 목록 채우기
+    if (effectiveState) {
+      const stateSel = document.getElementById('stateSelect');
+      const hasState = Array.from(stateSel.options).some(o => o.value === effectiveState);
+      if (hasState) {
+        stateSel.value = effectiveState;
+        populateCountySelect(effectiveState);   // ← 수동 호출 (change 이벤트는 안 뜸)
+
+        // 4) county(FIPS) → countySelect 지정
+        if (countyParam) {
+          const countySel = document.getElementById('countySelect');
+          const hasCounty = Array.from(countySel.options).some(o => o.value === countyParam);
+          if (hasCounty) {
+            countySel.value = countyParam;
+          } else {
+            console.warn('[property-tax] County FIPS not found in state:', countyParam);
+          }
+        }
+      } else {
+        console.warn('[property-tax] State not found in data:', effectiveState);
+      }
+    }
+  }
+
+  function calculate() {
+    const homeValue = parseFloat(document.getElementById('homeValue').value) || 0;
+
   function calculate() {
     const homeValue = parseFloat(document.getElementById('homeValue').value) || 0;
     const assessmentRatio = parseFloat(document.getElementById('assessmentRatio').value) || 100;
@@ -117,6 +176,38 @@
 
     // 비교 박스
     checkComparison(rate, state);
+    updateInsuranceLink();   // 🆕
+  }
+  // 🆕 insurance 역방향 링크 생성/노출
+  function updateInsuranceLink() {
+    const box = document.getElementById('insuranceLinkBox');
+    const link = document.getElementById('insuranceLink');
+    if (!box || !link) return;
+
+    const countySel = document.getElementById('countySelect');
+    const fips = countySel && countySel.value;
+
+    // county 미선택 또는 메타데이터 없음 → 숨김
+    if (!fips || !countyData || !countyData[fips]) {
+      box.style.display = 'none';
+      link.removeAttribute('href');
+      return;
+    }
+
+    const info = countyData[fips];
+    const slug = info.length >= 5 ? info[4] : null;
+
+    // slug 없으면 숨김 (매칭 실패 케이스)
+    if (!slug) {
+      box.style.display = 'none';
+      link.removeAttribute('href');
+      return;
+    }
+
+    // insurance_base_url 은 fetch 한 data 에서 가져옴 (아래 4-C 참고)
+    const baseUrl = window.__insuranceBaseUrl || 'https://insurance.dataindp.com';
+    link.href = `${baseUrl}/counties/${encodeURIComponent(slug)}.html`;
+    box.style.display = 'block';
   }
 
   function checkComparison(rate, state) {

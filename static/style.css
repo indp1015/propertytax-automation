@@ -820,3 +820,6 @@ h2 { font-size: 1.4em; margin-top: 1.8em; color: #1a3d5c; border-bottom: 2px sol
     align-items: center;
   }
 }
+#insuranceLink:hover {
+  text-decoration: underline;
+}
