@@ -24,10 +24,10 @@
       // 국민 평균 표시
       const el = document.getElementById('nationalAvg');
       if (el) el.textContent = nationalAvgRate.toFixed(2) + '%';
-      // 🆕 insurance 역방향 링크 초기 상태 (county 미선택 시 숨김)
-      updateInsuranceLink();
 
-      // 🆕 URL 파라미터 적용 후 최초 계산 (fetch 완료 후 반드시 재계산)
+      // 🆕 insurance base URL 저장 (역방향 링크용)
+      window.__insuranceBaseUrl = data.insurance_base_url || 'https://insurance.dataindp.com';
+
       applyUrlParams();
       calculate();
     })
@@ -87,14 +87,28 @@
     }
   }
 
-  // 🆕 URL 파라미터 초기값 적용 (?state=AL&county=01089&price=299200)
+  // 🆕 URL 파라미터 적용 (?state=VA&county=51065&price=400000)
+  // ⚠️ 데이터의 state는 'Virginia' 같은 전체 이름. URL은 'VA' 약자.
+  //    → FIPS 우선, 없으면 약자→전체 이름 매핑으로 폴백.
+  const STATE_ABBR_TO_NAME = {
+    'AL':'Alabama','AK':'Alaska','AZ':'Arizona','AR':'Arkansas','CA':'California',
+    'CO':'Colorado','CT':'Connecticut','DE':'Delaware','FL':'Florida','GA':'Georgia',
+    'HI':'Hawaii','ID':'Idaho','IL':'Illinois','IN':'Indiana','IA':'Iowa',
+    'KS':'Kansas','KY':'Kentucky','LA':'Louisiana','ME':'Maine','MD':'Maryland',
+    'MA':'Massachusetts','MI':'Michigan','MN':'Minnesota','MS':'Mississippi','MO':'Missouri',
+    'MT':'Montana','NE':'Nebraska','NV':'Nevada','NH':'New Hampshire','NJ':'New Jersey',
+    'NM':'New Mexico','NY':'New York','NC':'North Carolina','ND':'North Dakota','OH':'Ohio',
+    'OK':'Oklahoma','OR':'Oregon','PA':'Pennsylvania','RI':'Rhode Island','SC':'South Carolina',
+    'SD':'South Dakota','TN':'Tennessee','TX':'Texas','UT':'Utah','VT':'Vermont',
+    'VA':'Virginia','WA':'Washington','WV':'West Virginia','WI':'Wisconsin','WY':'Wyoming',
+    'DC':'District of Columbia','PR':'Puerto Rico'
+  };
+
   function applyUrlParams() {
     const params = new URLSearchParams(window.location.search);
-
-    const priceParam  = params.get('price');
-    const stateParam  = (params.get('state')  || '').trim().toUpperCase();
-    // FIPS는 leading zero가 있을 수 있으므로 5자리로 정규화
-    const rawCounty   = (params.get('county') || '').trim();
+    const priceParam = params.get('price');
+    const stateParam = (params.get('state') || '').trim().toUpperCase();
+    const rawCounty  = (params.get('county') || '').trim();
     const countyParam = rawCounty ? rawCounty.padStart(5, '0') : '';
 
     // 1) price → homeValue
@@ -105,32 +119,34 @@
       }
     }
 
-    // 2) county만 있고 state가 없으면 FIPS로 주 약자 역조회
-    let effectiveState = stateParam;
-    if (!effectiveState && countyParam && countyData && countyData[countyParam]) {
-      effectiveState = countyData[countyParam][1];  // info = [name, state, median_tax, rate]
+    // 2) 상태 결정 — FIPS 우선, 없으면 state 약자 → 전체 이름 매핑
+    let effectiveState = null;
+    if (countyParam && countyData && countyData[countyParam]) {
+      effectiveState = countyData[countyParam][1];         // "Virginia"
+    } else if (stateParam) {
+      effectiveState = STATE_ABBR_TO_NAME[stateParam] || stateParam;
     }
 
-    // 3) state → stateSelect 지정 + county 목록 채우기
-    if (effectiveState) {
-      const stateSel = document.getElementById('stateSelect');
-      const hasState = Array.from(stateSel.options).some(o => o.value === effectiveState);
-      if (hasState) {
-        stateSel.value = effectiveState;
-        populateCountySelect(effectiveState);   // ← 수동 호출 (change 이벤트는 안 뜸)
+    if (!effectiveState) return;
 
-        // 4) county(FIPS) → countySelect 지정
-        if (countyParam) {
-          const countySel = document.getElementById('countySelect');
-          const hasCounty = Array.from(countySel.options).some(o => o.value === countyParam);
-          if (hasCounty) {
-            countySel.value = countyParam;
-          } else {
-            console.warn('[property-tax] County FIPS not found in state:', countyParam);
-          }
-        }
+    // 3) stateSelect 적용 + county 목록 채우기
+    const stateSel = document.getElementById('stateSelect');
+    const hasState = Array.from(stateSel.options).some(o => o.value === effectiveState);
+    if (!hasState) {
+      console.warn('[property-tax] State not found in select:', effectiveState, '(raw:', stateParam, ')');
+      return;
+    }
+    stateSel.value = effectiveState;
+    populateCountySelect(effectiveState);
+
+    // 4) county(FIPS) 적용
+    if (countyParam) {
+      const countySel = document.getElementById('countySelect');
+      const hasCounty = Array.from(countySel.options).some(o => o.value === countyParam);
+      if (hasCounty) {
+        countySel.value = countyParam;
       } else {
-        console.warn('[property-tax] State not found in data:', effectiveState);
+        console.warn('[property-tax] County FIPS not found:', countyParam, 'in state:', effectiveState);
       }
     }
   }
@@ -205,6 +221,35 @@
     }
 
     // insurance_base_url 은 fetch 한 data 에서 가져옴 (아래 4-C 참고)
+    const baseUrl = window.__insuranceBaseUrl || 'https://insurance.dataindp.com';
+    link.href = `${baseUrl}/counties/${encodeURIComponent(slug)}.html`;
+    box.style.display = 'block';
+  }
+
+    // 🆕 insurance 역방향 링크 생성/노출
+  function updateInsuranceLink() {
+    const box  = document.getElementById('insuranceLinkBox');
+    const link = document.getElementById('insuranceLink');
+    if (!box || !link) return;
+
+    const countySel = document.getElementById('countySelect');
+    const fips = countySel && countySel.value;
+
+    // county 미선택 / 데이터 없음 / slug 없음 → 링크 숨김
+    if (!fips || !countyData || !countyData[fips]) {
+      box.style.display = 'none';
+      link.removeAttribute('href');
+      return;
+    }
+
+    const info = countyData[fips];
+    const slug = info.length >= 5 ? info[4] : null;
+    if (!slug) {
+      box.style.display = 'none';
+      link.removeAttribute('href');
+      return;
+    }
+
     const baseUrl = window.__insuranceBaseUrl || 'https://insurance.dataindp.com';
     link.href = `${baseUrl}/counties/${encodeURIComponent(slug)}.html`;
     box.style.display = 'block';
