@@ -884,3 +884,37 @@ h2 { font-size: 1.4em; margin-top: 1.8em; color: #1a3d5c; border-bottom: 2px sol
   border-radius: 20px;
   font-size: 0.9em;
 }
+/* 🆕 자동완성 드롭다운 스타일 */
+.suggestions-box {
+  display: none; /* 기본적으로 숨김 */
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 80px; /* Find 버튼 영역 제외 */
+  background: white;
+  border: 1px solid #e0e8f0;
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  max-height: 250px;
+  overflow-y: auto;
+  z-index: 1000;
+  text-align: left;
+}
+.suggestion-item {
+  padding: 10px 16px;
+  cursor: pointer;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 0.95em;
+  color: #333;
+}
+.suggestion-item:last-child {
+  border-bottom: none;
+}
+.suggestion-item:hover {
+  background: #f0f5fa;
+  color: #1a3d5c;
+}
+.suggestion-item strong {
+  color: #1a3d5c;
+}
