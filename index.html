@@ -55,7 +55,25 @@
   <strong>3134</strong> U.S. counties. See median property tax
   bills, effective tax rates, and how your county ranks nationally.
 </p>
-
+<!-- 🆕 검색창 섹션 시작 -->
+<div class="search-widget">
+  <h2 style="border:none; margin-top: 0; font-size: 1.2em;">🔍 Find Property Tax Rates for Your Area</h2>
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Enter ZIP, county, or state (e.g., 90210, Los Angeles, CA)">
+    <button id="searchBtn" onclick="performSearch()">Find</button>
+  </div>
+  <div class="search-links">
+    <a href="#" onclick="useMyLocation(); return false;" id="locationBtn">📍 Use my location</a>
+    <span class="popular-links">
+      Popular: 
+      <a href="/counties/los-angeles-california.html">Los Angeles</a> · 
+      <a href="/counties/harris-texas.html">Houston</a> · 
+      <a href="/counties/cook-illinois.html">Chicago</a> · 
+      <a href="/counties/maricopa-arizona.html">Phoenix</a>
+    </span>
+  </div>
+</div>
+<!-- 🆕 검색창 섹션 끝 -->
 
 <div class="key-stats">
   <div class="stat">
@@ -229,7 +247,9 @@
   (ACS) 5-Year Estimates. Variables: B25103 (Median Real Estate Taxes Paid),
   B25077 (Median Home Value). All data is public domain.
 </p>
-
+<!-- 🆕 전역 BASE_URL 설정 + 공통 검색 스크립트 로드 -->
+<script>window.BASE_URL = "";</script>
+<script src="/static/search.js"></script>
 
 </main>
 
