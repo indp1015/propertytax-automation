@@ -140,11 +140,33 @@
 
 <div class="ai-insight">
   <h2>📝 Property Tax Notes</h2>
-  <p>The property tax landscape in Montgomery County, Iowa, presents a statistical anomaly that requires careful contextual interpretation. The reported effective tax rate of 0.00% stands in stark contrast to the national average of 1.00% and aligns precisely with the state average, which is also listed at 0.00%. This discrepancy suggests that the data source likely reflects a reporting limitation or a specific subset of non-taxable properties rather than a genuine absence of fiscal obligations for all homeowners. Consequently, classifying this jurisdiction as a high-tax or low-tax area based solely on these figures is misleading. The median annual property tax of $0 indicates that the dataset may exclude standard residential assessments or that the aggregation method fails to capture the full scope of local levies, such as school district or municipal taxes that typically constitute the bulk of Iowa’s property tax burden.
+  <p>1.  **Analyze the Request:**
+    *   **Topic:** Property tax landscape for Montgomery County, Iowa.
+    *   **Data provided:** Median Annual Property Tax: $2,007; Effective Tax Rate: 1.65%; Median Home Value: $121,400; Median Household Income: $63,666; National Average Rate: 0.92%; National Median Tax: $1,630; Iowa State Average Rate: 0.00% (Wait, Iowa state average rate is listed as 0.00%? That seems odd, but I must use the provided data. Actually, maybe it means the *average* effective rate across all Iowa counties is 0.92% or something, but the prompt explicitly says "Iowa State Average Rate: 0.00%". I will just use the provided numbers as given, or perhaps note the discrepancy if needed, but better to stick strictly to the provided numbers to avoid confusion. Let me re-read: "Iowa State Average Rate: 0.00%". Okay, I will use 0.00% as the state benchmark, or maybe interpret "0.00%" as a typo for something else, but strictly speaking, I must analyze based on the provided text. Wait, looking at the comparative context: "County rate vs National Average: +0.73%" -> 1.65% - 0.92% = 0.73%. "County rate vs State Average: +1.65%" -> 1.65% - 0.00% = 1.65%. So the state average is indeed 0.00% in this dataset. I will just reference the provided benchmarks.)
+    *   **Tax Burden Analysis Data:** Annual tax as % of household income: 3.15%; 5-Year Total Tax Burden: $10,035; 10-Year Total Tax Burden: $20,070; 30-Year Total Tax Burden: $60,210; County rate vs National Average: +0.73%; County rate vs State Average: +1.65%.
+    *   **Tasks:**
+        1.  Tax burden assessment (compare to state/national benchmarks, high or low tax?).
+        2.  Affordability impact (% of median household income goes to property tax, sustainability?).
+        3.  Long-term cost projection (cumulative lifetime cost 30 years on median home).
+        4.  Practical implication for buyers.
+        5.  Practical implication for current owners (appeal/exemption opportunities - general guidance).
+        6.  One concrete insight (not obvious from raw numbers).
+    *   **Style Requirements:**
+        *   Professional, analytical tone.
+        *   Specific dollar amounts and percentages.
+        *   Third person only (no "I", "we", "you").
+        *   No predictions or future forecasts.
+        *   No specific tax or legal advice.
+        *   Length: 280-320 words (2-3 paragraphs).
+        *   Begin directly with the analysis.
 
-From an affordability perspective, the data implies a zero percent impact on the median household income of $63,666. This metric suggests an infinitely sustainable tax burden, yet it fails to reflect the actual financial obligations faced by residents who own taxable real estate. The cumulative lifetime cost projection over thirty years remains at $0, reinforcing the likelihood of a data artifact rather than a true economic condition. Prospective buyers should approach these figures with skepticism, understanding that the actual tax liability will depend on the specific assessed value of the property and the combined levies of the relevant school district, county, and local municipalities. Relying on the reported zero tax rate for budgeting purposes would be imprudent, as it does not account for the standard fiscal mechanisms in place across the state.
-
-For current owners, the apparent absence of tax data does not negate the existence of standard exemption opportunities, such as homestead exemptions or senior citizen credits, which are common in Iowa. However, without a baseline tax figure, calculating the specific benefit of these exemptions is impossible using the provided metrics. A critical insight emerges from the juxtaposition of the $121,400 median home value and the zero tax report. This combination suggests that the data may be capturing a segment of the population with unique tax statuses, such as agricultural land owners or those with specific charitable or governmental exemptions, rather than the general residential market. Therefore, any financial planning must be grounded in individualized tax statements rather than these aggregated averages, which appear to underrepresent the true fiscal environment of the county.</p>
+2.  **Drafting - Section by Section:**
+    *   *Paragraph 1: Tax burden assessment, Affordability impact, Long-term cost projection.*
+        Montgomery County’s effective property tax rate of 1.65% significantly exceeds both the national average of 0.92% and the state benchmark of 0.00%, classifying it as a high-tax jurisdiction relative to peer benchmarks. This elevated rate results in an annual tax burden equal to 3.15% of the median household income ($63,666), raising immediate affordability concerns. For a median-priced home valued at $121,400, the cumulative 30-year property tax burden reaches $60,210, underscoring substantial long-term financial obligations.
+    *   *Paragraph 2: Practical implications for buyers and current owners.*
+        Prospective buyers should recognize that the combination of a high effective rate and a modest median home value creates a significant fixed cost that does not scale down proportionally with property appreciation. Current owners may benefit from standard exemptions available at the local level, such as homestead exemptions for primary residences or agricultural land exemptions, though these require formal application and verification.
+    *   *Paragraph 3: Concrete insight.*
+        A notable insight derived from these figures is that while the county</p>
   <p class="insight-meta">
     Based on U.S. Census ACS 5-Year Estimates.
   </p>
